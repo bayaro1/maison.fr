@@ -1,0 +1,82 @@
+.navbar {
+    display: flex;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.192);
+}
+
+#button-home {
+    text-decoration: none;
+    color: black;
+}
+
+#button-ref {
+    font-size: 0.9em;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    background-color: rgba(36, 129, 13, 0.842);
+    border-radius: 5px;
+    padding-left: 9px;
+    padding-right: 9px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+#button-ref:hover {
+    background-color: rgba(25, 92, 9, 0.842);
+}
+
+#home-container {
+    margin-left: 30%;
+}
+
+#main-title {
+    margin-top: 80px;
+    margin-bottom: 60px;
+    font-size: 2.5em;
+}
+
+#homeform {
+
+}
+
+.homeform-group {
+    display: inline-block;
+}
+
+.homeform-control {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 3px;
+    border: 1px solid grey;
+}
+.homeform-control::placeholder {
+    color: rgba(44, 41, 41, 0.822);
+    font-weight: 500;
+}
+
+#homeform-button {
+    font-size: 1.5em;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    background-color: rgba(36, 129, 13, 0.842);
+    border-color: rgba(36, 129, 13, 0.842);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 3px;
+    border: 1px solid grey;
+    font-size: 1.5em;
+}
+#homeform-button:hover {
+    background-color: rgba(25, 92, 9, 0.842);
+}
+
+.subtext {
+    color: grey;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+

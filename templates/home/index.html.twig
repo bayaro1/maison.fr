@@ -2,5 +2,20 @@
 
 
 {% block body %}
+    <div id="home-container">
+        <h1 id="main-title">Prenez RDV avec un pro de l'Habitat</h1>
 
+        <div>
+            <form id="homeform" action="" method="POST">
+                <div class="homeform-group">
+                    <input type="text" class="homeform-control" placeholder="Que recherchez-vous ?" name="q"> 
+                    <input type="text" class="homeform-control" placeholder="Où?" name="localisation">
+                </div>
+                <button type="submit" id="homeform-button">Rechercher</button>
+            </form>
+        </div>
+        <div class="subtext">
+            Recherches fréquentes : peindre ma chambre, réparer une fuite d'eau, rénovation
+        </div>
+    </div>
 {% endblock %}
