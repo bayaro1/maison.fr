@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\DataModel\Search;
 use App\Form\SearchType;
+use App\Helper\Slugator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ class HomeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) 
         { 
             return $this->redirectToRoute('pro_index', [
-                'city' => strtolower($search->city), 
+                'city' => Slugator::slugify($search->city), 
                 'category' => $search->category->getSlug()
             ]);
         }

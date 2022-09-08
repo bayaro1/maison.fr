@@ -4,6 +4,7 @@ namespace App\DataFixtures\TestFixtures;
 
 use App\Config\CategoryConfig;
 use App\Entity\Category;
+use App\Helper\Slugator;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -15,7 +16,7 @@ class CategoryTestFixtures extends Fixture
         {
             $category = (new Category)
                         ->setName($category_name)
-                        ->setSlug(strtolower(str_replace(' ', '_', $category_name)))
+                        ->setSlug(Slugator::slugify($category_name))
                         ;
             $manager->persist($category);
         }

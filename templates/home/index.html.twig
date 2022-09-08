@@ -2,24 +2,25 @@
 
 
 {% block body %}
-    <div class="container" style="margin-left: 30%;">
+    <div class="container" style="margin-left: 29%; margin-top: 4.5%;">
         <h1 id="main-title">Prenez RDV avec un pro de l'Habitat</h1>
 
         <div>
             {{ form_start(form) }}
-            
+            <div style="display: flex; align-items: start;">
                 {{ form_row(form.category, {
                     'label': false,
-                    'attr': {'style': 'border: solid black 1px; border-radius: 0px; padding: 8px; width: 30%; display: block-inline;'}
+                    'attr': {'style': 'border: solid grey 1px; border-radius: 3px; padding: 8px; height: 50px; width: 300px; font-weight: 600; color: grey;'}
                 }) }}
                 {{ form_row(form.city, {
                     'label': false, 
                     'attr': {
-                        'style': 'border: solid black 1px; border-radius: 0px; padding: 8px; width: 30%; display: block-inline;', 
+                        'style': 'border: solid grey 1px; border-left: solid white; border-radius: 3px; padding: 8px; height: 50px; width: 300px; font-weight: 600; color: grey;', 
                         'placeholder': 'Où ?'
                         }
                 }) }}
-            <button type="submit" id="homeform-button">Rechercher</button>
+                <button type="submit" id="homeform-button" class="ms-2" style="height: 50px; width: 140px;">Rechercher</button>
+            </div>
             {{ form_end(form) }}
         </div>
 
