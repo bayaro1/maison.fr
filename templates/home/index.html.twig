@@ -2,20 +2,32 @@
 
 
 {% block body %}
-    <div id="home-container">
+    <div class="container">
         <h1 id="main-title">Prenez RDV avec un pro de l'Habitat</h1>
 
         <div>
-            <form id="homeform" action="" method="POST">
-                <div class="homeform-group">
-                    <input type="text" class="homeform-control" placeholder="Que recherchez-vous ?" name="q"> 
-                    <input type="text" class="homeform-control" placeholder="Où?" name="localisation">
-                </div>
-                <button type="submit" id="homeform-button">Rechercher</button>
-            </form>
+            {{ form_start(form) }}
+            {{ form_row(form.category, {
+                'label': 'Que recherchez-vous ?'
+            }) }}
+            {{ form_row(form.city, {
+                'label': false, 
+                'attr': {'placeholder': 'Où ?'}
+            })}}
+            <button type="submit" id="homeform-button">Rechercher</button>
+            {{ form_end(form) }}
+
         </div>
         <div class="subtext">
             Recherches fréquentes : peindre ma chambre, réparer une fuite d'eau, rénovation
         </div>
+    </div>
+
+    <div style="background-color: rgba(238, 232, 232, 0.925); margin-top: 110px; padding-top: 40px; height: 340px;">
+        <h3 style="text-align: center; font-size: 1.5em;">Un service de prise de RDV recommandé !</h3>
+    </div>
+
+    <div style="padding-top: 90px; height: 360px;">
+        <h3 style="text-align: center; font-size: 1.4em;">Les derniers rendez-vous pour des travaux</h3>
     </div>
 {% endblock %}

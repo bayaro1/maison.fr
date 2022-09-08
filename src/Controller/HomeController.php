@@ -2,15 +2,30 @@
 
 namespace App\Controller;
 
+use App\Form\DataModel\Search;
+use App\Form\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return $this->render('home/index.html.twig');
+        $search = new Search;
+        $form = $this->createForm(SearchType::class, $search);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) 
+        { 
+            return $this->redirectToRoute('pro_index', [
+                'city' => strtolower($search->city), 
+                'category' => $search->category->getSlug()
+            ]);
+        }
+        return $this->render('home/index.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

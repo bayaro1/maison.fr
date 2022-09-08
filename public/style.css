@@ -34,26 +34,6 @@
     font-size: 2.5em;
 }
 
-#homeform {
-
-}
-
-.homeform-group {
-    display: inline-block;
-}
-
-.homeform-control {
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    border-radius: 3px;
-    border: 1px solid grey;
-}
-.homeform-control::placeholder {
-    color: rgba(44, 41, 41, 0.822);
-    font-weight: 500;
-}
 
 #homeform-button {
     font-size: 1.5em;
@@ -75,8 +55,10 @@
 }
 
 .subtext {
-    color: grey;
+    color: rgba(189, 176, 176, 0.39);
     font-size: 0.8em;
     margin-top: 5px;
 }
+
+
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}maison.fr{% endblock %}</title>
+        <title>{% block title %}maison.fr : Trouvez les meilleurs pros pour vos travaux !{% endblock %}</title>
         
         {# my css #}
         <link href="/style.css" rel="stylesheet">
@@ -26,5 +26,9 @@
     <body>
         {% include "layout/_navbar.html.twig" %}
         {% block body %}{% endblock %}
+
+        <footer>
+            {% include "layout/_footer.html.twig" %}
+        </footer>
     </body>
 </html>
