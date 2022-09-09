@@ -21,8 +21,8 @@ class HomeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) 
         { 
             return $this->redirectToRoute('pro_index', [
-                'city' => Slugator::slugify($search->city), 
-                'category' => $search->category->getSlug()
+                'city' => Slugator::slugify($search->getCity()), 
+                'category' => $search->getCategory()->getSlug()
             ]);
         }
         return $this->render('home/index.html.twig', [
