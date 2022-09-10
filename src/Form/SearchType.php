@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\City;
 use App\Form\DataModel\Search;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +19,10 @@ class SearchType extends AbstractType
                 'class' => Category::class, 
                 'choice_label' => 'name'
             ])
-            ->add('city')
+            ->add('city', EntityType::class, [
+                'class' => City::class,
+                'choice_label' => 'fullName'
+            ])
         ;
     }
 

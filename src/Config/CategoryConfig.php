@@ -4,17 +4,19 @@ namespace App\Config;
 class CategoryConfig
 {
     public const LIST = [
-        'travaux de maçonnerie', 
-        'peinture intérieure', 
-        'plaquiste', 
-        'peinture menuiseries extérieures',
-        'gros oeuvre', 
-        'entreprise générale de bâtiment', 
-        'entreprise générale de rénovation', 
-        'charpente bois', 
-        'couverture tuile', 
-        'couverture métal', 
-        'couverture shingle', 
-        'isolation extérieure'
+        'Travaux de maçonnerie', 
+        'Peinture intérieure', 
+        'Plaquiste', 
+        'Peinture menuiseries extérieures',
+        'Gros oeuvre', 
+        'Entreprise générale de bâtiment', 
+        'Entreprise générale de rénovation', 
+        'Charpente bois', 
+        'Couverture tuile', 
+        'Couverture métal', 
+        'Couverture shingle', 
+        'Isolation extérieure'
     ];
+
+    public const COUNT = 12;
 }

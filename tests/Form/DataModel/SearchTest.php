@@ -2,10 +2,13 @@
 namespace App\Tests\Form\DataModel;
 
 use App\Entity\Category;
+use App\Entity\City;
 use App\Form\DataModel\Search;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use TypeError;
 
 class SearchTest extends KernelTestCase
 {
@@ -20,7 +23,7 @@ class SearchTest extends KernelTestCase
     {
         return (new Search)
                 ->setCategory(new Category)
-                ->setCity('example')
+                ->setCity(new City)
                 ;
     }
     protected function assertHasErrors(int $expectedErrors, Search $search)
@@ -34,14 +37,28 @@ class SearchTest extends KernelTestCase
          }
          $this->assertCount($expectedErrors, $errors, implode(', ', $messages));
     }
-    public function testSearchWithBlankCity()
+    public function testSearchWithNullCity()
     {
         $search = $this->createSearch()
-                        ->setCity('')
+                        ->setCity(null)
                         ;
         $this->assertHasErrors(1, $search);
     }
-    public function testSearchWithNotCorrectCategory()
+    public function testSearchWithStringCity()
+    {
+        $this->expectException(TypeError::class);
+        $search = $this->createSearch()
+                        ->setCity('ville')
+                        ;
+    }
+    public function testSearchWithStringCategory()
+    {
+        $this->expectException(TypeError::class);
+        $search = $this->createSearch()
+                        ->setCategory('catégorie')
+                        ;
+    }
+    public function testSearchWithNullCategory()
     {
         $search = $this->createSearch()
                         ->setCategory(null)

@@ -1,9 +1,10 @@
 <?php
 namespace App\Form\DataModel;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\City;
 
 use App\Entity\Category;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Search
 {
@@ -11,29 +12,10 @@ class Search
     protected Category|null $category;
 
     #[Assert\NotBlank(message: 'Vous devez indiquer une ville')]
-    protected string $city;
+    protected City|null $city;
 
     
 
-    /**
-     * Get the value of city
-     */ 
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
-     * Set the value of city
-     *
-     * @return  self
-     */ 
-    public function setCity($city)
-    {
-        $this->city = $city;
-
-        return $this;
-    }
 
     /**
      * Get the value of category
@@ -51,6 +33,26 @@ class Search
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of city
+     */ 
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set the value of city
+     *
+     * @return  self
+     */ 
+    public function setCity($city)
+    {
+        $this->city = $city;
 
         return $this;
     }

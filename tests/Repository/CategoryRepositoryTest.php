@@ -2,6 +2,7 @@
 namespace App\Tests\Repository;
 
 use App\Config\CategoryConfig;
+use App\DataFixtures\CategoryFixtures;
 use App\Repository\CategoryRepository;
 use App\DataFixtures\TestFixtures\CategoryTestFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -22,7 +23,7 @@ class CategoryRepositoryTest extends KernelTestCase
 
     public function testCountAll()
     {
-        $this->databaseTool->loadFixtures([CategoryTestFixtures::class]);
+        $this->databaseTool->loadFixtures([CategoryFixtures::class]);
         $categories = self::getContainer()->get(CategoryRepository::class)->findAll();
         $this->assertCount(count(CategoryConfig::LIST), $categories);
     }

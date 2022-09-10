@@ -2,13 +2,21 @@
 
 namespace App\Tests;
 
+use App\Entity\City;
 use App\Entity\Category;
+use App\DataFixtures\CityFixtures;
+use App\Repository\CityRepository;
+use App\DataFixtures\CategoryFixtures;
 use App\Repository\CategoryRepository;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use App\DataFixtures\TestFixtures\CityTestFixtures;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\DataFixtures\TestFixtures\CategoryTestFixtures;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 
 class HomeControllerTest extends WebTestCase
 {
@@ -35,16 +43,28 @@ class HomeControllerTest extends WebTestCase
 
     public function testSearch():void 
     {
-        $categories = self::getContainer()->get(CategoryRepository::class)->findAll();
+        $container = self::getContainer();
+        /** @var AbstractDatabaseTool */
+        $dbtool = $container->get(DatabaseToolCollection::class)->get();
+        $dbtool->loadFixtures([
+            CategoryFixtures::class,
+            CityFixtures::class
+        ]);
+
+        $categories = $container->get(CategoryRepository::class)->findAll();
+        $cities = $container->get(CityRepository::class)->findAll();
         /** @var Category */
         $category = $categories[random_int(0, count($categories) - 1)];
+        /** @var City */
+        $city = $cities[random_int(0, count($cities) - 1)];
+        
         $form = $this->crawler->selectButton('Rechercher')->form([
-            'city' => 'Paris',
+            'city' => $city->getId(),
             'category' => $category->getId()
         ]);
         $this->client->submit($form);
         $this->assertResponseRedirects($this->client->getContainer()->get(UrlGeneratorInterface::class)->generate('pro_index', [
-            'city' => 'paris',
+            'city' => $city->getSlug(),
             'category' => $category->getSlug()
         ]));
     }
