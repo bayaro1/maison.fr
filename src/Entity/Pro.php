@@ -38,7 +38,7 @@ class Pro
     #[ORM\Column(type: Types::TEXT)]
     private ?string $departments = null;
 
-    private ?Picture $firstPicture;
+    private ?Picture $firstPicture = null;
 
 
     public function __construct()

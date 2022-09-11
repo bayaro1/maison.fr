@@ -59,13 +59,13 @@ class HomeControllerTest extends WebTestCase
         $city = $cities[random_int(0, count($cities) - 1)];
         
         $form = $this->crawler->selectButton('Rechercher')->form([
-            'city' => $city->getId(),
-            'category' => $category->getId()
+            'category' => $category->getId(),
+            'city' => $city->getId()
         ]);
         $this->client->submit($form);
         $this->assertResponseRedirects($this->client->getContainer()->get(UrlGeneratorInterface::class)->generate('pro_index', [
-            'city' => $city->getSlug(),
-            'category' => $category->getSlug()
+            'city_slug' => $city->getSlug(),
+            'category_slug' => $category->getSlug()
         ]));
     }
 }

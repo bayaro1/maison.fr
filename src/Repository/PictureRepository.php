@@ -33,15 +33,41 @@ class PictureRepository extends ServiceEntityRepository
             $prosById[$pro->getId()] = $pro;
         }
 
-        /** @var Picture[] */
-        $pictures = $this->createQueryBuilder('p')
-                ->select('p')
-                ->where('p.pro IN(:pros)')
-                ->setParameter('pros', $pros)
-                ->groupBy('p.pro')
-                ->getQuery()
-                ->getResult()
-                ;
+        // /** @var Picture[] */
+        // $pictures = $this->createQueryBuilder('p')
+        //         ->select('p')
+        //         ->where('p.id IN (:ids)')
+        //         ->setParameter(
+        //             'ids', 
+        //             $this->createQueryBuilder('pic')
+        //                     ->select('MAX(pic.id)')
+        //                     ->where('pic.pro IN(:pros)')
+        //                     ->groupBy('pic.pro')
+        //                     ->setParameter('pros', $pros)
+        //                     ->getQuery()
+        //                     ->getResult()
+        //         )
+        //         ->getQuery()
+        //         ->getResult()
+        //         ;
+
+        $qb = $this->createQueryBuilder('p');
+        $pictures = $qb
+                        ->select('p')
+                        ->where(
+                            $qb->expr()->in(
+                                'p.id', 
+                                $this->createQueryBuilder('pic')
+                                        ->select('MAX(pic.id)')
+                                        ->where('pic.pro IN(:pros)')
+                                        ->groupBy('pic.pro')
+                                        ->getDQL()
+                            )
+                        )
+                        ->setParameter('pros', $pros)
+                        ->getQuery()
+                        ->getResult()
+                        ;
         
         foreach($pictures as $picture)
         {
