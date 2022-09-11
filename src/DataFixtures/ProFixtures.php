@@ -24,6 +24,24 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
     }
     public function load(ObjectManager $manager)
     {
+        for ($a=0; $a < 10; $a++) 
+        { 
+            $pro = (new Pro)
+                    ->setBusinessName('Maçonnerie n° '.$a)
+                    ->setContactName('maçon n° '.$a)
+                    ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))
+                    ->setPhone('0123456789')
+                    ->addCategory($this->getReference('category1'))
+                    ->addCategory($this->getReference('category5'))
+                    ->setDepartments('64, 31, 32, 40')
+                    ;
+
+            for ($i=1; $i <= 7; $i++) { 
+                $pro->addPicture((new Picture)->setFileName('maçonnerie/'.$i.'.jpg'));
+            }
+            $manager->persist($pro);
+        }
+
         //maçon
 
         $pro = (new Pro)
@@ -36,15 +54,15 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
                 ->setDepartments('64, 31, 32, 40')
                 ;
 
-        for ($i=0; $i < 7; $i++) { 
+        for ($i=1; $i <= 7; $i++) { 
             $pro->addPicture((new Picture)->setFileName('maçonnerie/'.$i.'.jpg'));
         }
-       $manager->persist($pro);
+        $manager->persist($pro);
 
 
-       //peintre
+        //peintre
 
-       $pro = (new Pro)
+        $pro = (new Pro)
                 ->setBusinessName('Bernard Peinture')
                 ->setContactName('Bernard Pinto')
                 ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))
@@ -57,15 +75,15 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
                 ->setDepartments('75, 95, 91, 78, 64')
                 ;
 
-        for ($i=0; $i < 7; $i++) { 
+        for ($i=1; $i <= 7; $i++) { 
             $pro->addPicture((new Picture)->setFileName('peinture_intérieure/'.$i.'.jpg'));
         }
-       $manager->persist($pro);
+        $manager->persist($pro);
 
 
-       //charpentier-couvreur
+        //charpentier-couvreur
 
-       $pro = (new Pro)
+        $pro = (new Pro)
                 ->setBusinessName('Renov Toiture')
                 ->setContactName('Jean-Claude Rouget')
                 ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))
@@ -78,7 +96,7 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
                 ->setDepartments('13, 84, 83, 64')
                 ;
 
-        for ($i=0; $i < 7; $i++) { 
+        for ($i=1; $i <= 7; $i++) { 
             $pro->addPicture((new Picture)->setFileName('couverture_tuile/'.$i.'.jpg'));
         }
         $manager->persist($pro);

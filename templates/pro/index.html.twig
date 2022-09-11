@@ -17,9 +17,9 @@
                 <div style="width: 100%;">
                     {% include "pro/_breadcrumb.html.twig" %}
 
-                    <h1 style="font-size: 2em;">Résultat de votre recherche "{{ category.name }}" à {{ city.fullName }}</h1>
+                    <h1 style="font-size: 2em; margin-top: 20px;">Résultat de votre recherche "{{ category.name }}" à {{ city.fullName }}</h1>
                     {% if pros | length is not same as 0 %}
-                        <p><strong>{{ pros | length }}</strong> professionnel{% if pros | length > 1 %}s{% endif %} correspond{% if pros | length > 1 %}ent{% endif %} à votre recherche à <strong>{{ city.name }}</strong></p>
+                        <p style="margin-bottom: 50px;"><strong>{{ pros | length }}</strong> professionnel{% if pros | length > 1 %}s{% endif %} correspond{% if pros | length > 1 %}ent{% endif %} à votre recherche à <strong>{{ city.name }}</strong></p>
                     {% else %}
                         <p>Nous sommes désolés, aucun professionnel ne correspond à votre recherche à <strong>{{ city.name }}</strong></p>
                     {% endif %}

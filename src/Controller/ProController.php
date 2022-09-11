@@ -44,7 +44,7 @@ class ProController extends AbstractController
             ]);
         }
 
-        $pros = $this->proRepository->findByDepartmentAndCategory($city->getDepartmentCode(), $category);
+        $pros = $this->proRepository->findByDepartmentAndCategoryHydratedWithFirstPicture($city->getDepartmentCode(), $category);
 
         return $this->render('pro/index.html.twig', [
             'city' => $city,

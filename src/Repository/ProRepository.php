@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Entity\Picture;
 use App\Entity\Pro;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,12 +23,17 @@ class ProRepository extends ServiceEntityRepository
         parent::__construct($registry, Pro::class);
     }
 
-    public function findByDepartmentAndCategory(int $department, Category $category)
+    public function findByDepartmentAndCategoryHydratedWithFirstPicture(int $department, Category $category)
     {
         /** @var CategoryRepository */
         $categoryRepository = $this->getEntityManager()->getRepository(Category::class);
+
+        /** @var PictureRepository */
+        $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
         
-        return $this->createQueryBuilder('p')
+        $pros = $this->createQueryBuilder('p')
+                ->select('p', 'c')
+                ->join('p.categories', 'c')
                 ->andWhere('p.id IN(:ids)')
                 ->setParameter('ids', $categoryRepository->findProIdsForOneCategory($category))
                 ->andWhere('p.departments LIKE :department')
@@ -35,6 +41,8 @@ class ProRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult()
                 ;
+        $pictureRepository->hydrateProsWithFirstPicture($pros);
+        return $pros;
     }
 
     public function add(Pro $entity, bool $flush = false): void

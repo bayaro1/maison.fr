@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Picture;
+use App\Entity\Pro;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,35 @@ class PictureRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Picture::class);
+    }
+
+    /** 
+     * @param Pro[] $pros
+     */
+    public function hydrateProsWithFirstPicture(array $pros): void 
+    {
+        $prosById = [];
+        foreach($pros as $pro)
+        {
+            $prosById[$pro->getId()] = $pro;
+        }
+
+        /** @var Picture[] */
+        $pictures = $this->createQueryBuilder('p')
+                ->select('p')
+                ->where('p.pro IN(:pros)')
+                ->setParameter('pros', $pros)
+                ->groupBy('p.pro')
+                ->getQuery()
+                ->getResult()
+                ;
+        
+        foreach($pictures as $picture)
+        {
+            /** @var Pro */
+            $pro = $prosById[$picture->getPro()->getId()];
+            $pro->setFirstPicture($picture);
+        }
     }
 
     public function add(Picture $entity, bool $flush = false): void

@@ -38,6 +38,9 @@ class Pro
     #[ORM\Column(type: Types::TEXT)]
     private ?string $departments = null;
 
+    private ?Picture $firstPicture;
+
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -47,6 +50,17 @@ class Pro
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function showCategories(): string 
+    {
+        $categories_name = [];
+        foreach($this->categories as $category)
+        {
+            $categories_name[] = $category->getName();
+        }
+        $html = implode(' - ', $categories_name);
+        return substr($html, 0, 50). '...';
     }
 
     public function getBusinessName(): ?string
@@ -160,6 +174,28 @@ class Pro
     public function setDepartments(string $departments): self
     {
         $this->departments = $departments;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of firstPicture
+     */ 
+    public function getFirstPicture()
+    {
+        return $this->firstPicture;
+    }
+
+    /**
+     * Set the value of firstPicture
+     *
+     * @return  self
+     */ 
+    public function setFirstPicture($firstPicture)
+    {
+        $this->firstPicture = $firstPicture;
 
         return $this;
     }
