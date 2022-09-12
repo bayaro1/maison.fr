@@ -16,7 +16,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $client = self::createClient();
         
-        $this->loadTestUserFixtures($client);
+        $this->loadTestUserFixtures($client->getContainer());
 
         $crawler = $client->request('GET', $client->getContainer()->get(UrlGeneratorInterface::class)->generate('security_login'));
         $form = $crawler->selectButton('Sign in')->form([
@@ -29,7 +29,7 @@ class SecurityControllerTest extends WebTestCase
     public function testLoginWithBadCredentials()
     {
         $client = self::createClient();
-        $this->loadTestUserFixtures($client);
+        $this->loadTestUserFixtures($client->getContainer());
 
         $crawler = $client->request('GET', $client->getContainer()->get(UrlGeneratorInterface::class)->generate('security_login'));
         $form = $crawler->selectButton('Sign in')->form([

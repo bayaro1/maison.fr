@@ -21,8 +21,8 @@ class AccountControllerTest extends WebTestCase
     public function testUserCanAccessAccount()
     {
         $client = self::createClient();
-        $this->loadTestUserFixtures($client);
-        $this->login($this->getTestUser($client)->setRoles(['ROLE_USER']), $client);
+        $this->loadTestUserFixtures($client->getContainer());
+        $this->login($this->getTestUser($client->getContainer())->setRoles(['ROLE_USER']), $client);
 
         $client->request('GET', $client->getContainer()->get(UrlGeneratorInterface::class)->generate('account_index'));
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

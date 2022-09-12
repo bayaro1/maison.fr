@@ -24,7 +24,9 @@
         {% endblock %}
     </head>
     <body>
-        {% include "layout/_navbar.html.twig" %}
+        {% block navbar %}
+            {% include "layout/_default_navbar.html.twig" %}
+        {% endblock %}
         {% block body %}{% endblock %}
 
         <footer>
