@@ -46,6 +46,7 @@ class Register
         fields: [
             0 => new Assert\Type(Category::class)
         ], 
+        allowExtraFields: true,
         missingFieldsMessage : 'Vous devez choisir au moins une catégorie'
     )]
     private ?ArrayCollection $categories;
@@ -97,29 +98,7 @@ class Register
         return $this;
     }
 
-    /**
-     * Get the value of categories
-     *
-     * @return  null|Category[]
-     */ 
-    public function getCategories()
-    {
-        return $this->categories;
-    }
-
-    /**
-     * Set the value of categories
-     *
-     * @param  null|Category[]  $categories
-     *
-     * @return  self
-     */ 
-    public function setCategories($categories)
-    {
-        $this->categories = $categories;
-
-        return $this;
-    }
+    
 
     /**
      * Get the value of pictures
@@ -278,4 +257,24 @@ class Register
         return $this;
     }
 
+
+    /**
+     * Get the value of categories
+     */ 
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Set the value of categories
+     *
+     * @return  self
+     */ 
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
 }

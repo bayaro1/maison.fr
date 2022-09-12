@@ -28,7 +28,6 @@ class Pro
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'pros')]
     private Collection $categories;
 
-
     #[ORM\OneToMany(mappedBy: 'pro', targetEntity: Picture::class, cascade: ['persist'])]
     private Collection $pictures;
 
@@ -39,6 +38,9 @@ class Pro
     private ?string $departments = null;
 
     private ?Picture $firstPicture = null;
+
+    #[ORM\OneToOne(mappedBy: 'pro', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
 
     public function __construct()
@@ -61,6 +63,24 @@ class Pro
         }
         $html = implode(' - ', $categories_name);
         return substr($html, 0, 50). '...';
+    }
+
+    public function setCategories(ArrayCollection $categories):self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function setPictures(ArrayCollection $pictures):self
+    {
+        foreach($pictures as $picture)
+        {
+            $picture->SetPro($this);
+        }
+        $this->pictures = $pictures;
+
+        return $this;
     }
 
     public function getBusinessName(): ?string
@@ -196,6 +216,28 @@ class Pro
     public function setFirstPicture($firstPicture)
     {
         $this->firstPicture = $firstPicture;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setPro(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getPro() !== $this) {
+            $user->setPro($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
