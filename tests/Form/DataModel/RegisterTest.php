@@ -2,13 +2,17 @@
 namespace App\Tests\Form\DataModel;
 
 use App\Entity\City;
-use App\Form\DataModel\Register;
 use App\Entity\Category;
-use App\Tests\Controller\AuthenticationTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use App\Form\DataModel\Register;
 use Symfony\Bundle\MakerBundle\Validator;
+use App\Tests\Controller\AuthenticationTrait;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RegisterTest extends KernelTestCase
@@ -18,7 +22,7 @@ class RegisterTest extends KernelTestCase
     public function testRegisterIsValid()
     {
         $this->validate(
-            $this->createRegister(), 
+            $this->createRegister()->setImageFiles([$this->getTestJpgImage(), $this->getTestJpgImage()]), 
             0
         );
     }
@@ -136,6 +140,14 @@ class RegisterTest extends KernelTestCase
         );
     }
 
+    public function testRegisterHasPictureWithInvalidMimeType()
+    {
+        $this->validate(
+            $this->createRegister()->setImageFiles([$this->getTestTxtFile(), $this->getTestJpgImage(), $this->getTestTxtFile()]),
+            2
+        );
+    }
+
 
 
     private function getValidator():ValidatorInterface
@@ -164,9 +176,21 @@ class RegisterTest extends KernelTestCase
         $messages = [];
         foreach($errors as $error)
         {
-            $messages[] = $error->getMessage();
+            /** @var ConstraintViolation */
+            $error = $error;
+            $messages[] = $error->getMessage(). ' - '. $error->getPropertyPath();
         }
         $this->assertCount($expectedErrors, $errors, implode(', ', $messages));
+    }
+
+
+    private function getTestJpgImage(): File 
+    {
+        return new File(dirname(dirname(dirname(__DIR__))).'/public/images/tests/test.jpg');
+    }
+    private function getTestTxtFile(): File 
+    {
+        return new File(dirname(dirname(dirname(__DIR__))).'/public/images/tests/test.txt');
     }
 
 }

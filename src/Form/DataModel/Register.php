@@ -6,7 +6,10 @@ use App\Entity\Picture;
 use App\Entity\Category;
 use App\Validator\UniqueUserEmail;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Type;
 
 class Register
 {
@@ -35,6 +38,9 @@ class Register
     #[Assert\NotBlank(message: 'Le numéro de téléphone est obligatoire')]
     private ?string $phone;
 
+    #[Assert\All(
+        new Image(mimeTypes: ['image/jpeg'], mimeTypesMessage: 'Seul le format jpeg est accepté')
+    )]
     private ?array $imageFiles;
 
     /** 
@@ -42,19 +48,16 @@ class Register
      */
     private ?array $pictures;
 
-    #[Assert\Collection(
-        fields: [
-            0 => new Assert\Type(Category::class)
-        ], 
-        allowExtraFields: true,
-        missingFieldsMessage : 'Vous devez choisir au moins une catégorie'
-    )]
+    #[Assert\Count(min: 1, minMessage: 'Vous devez choisir au moins une catégorie')]
+    #[Assert\All([
+        new Type(Category::class)
+    ])]
     private ?ArrayCollection $categories;
 
-    #[Assert\NotBlank(message: 'Vous devez choisir votre ville')]
+    #[Assert\NotNull(message: 'Vous devez choisir votre ville')]
     private ?City $city;
 
-    #[Assert\NotBlank(message: 'Vous devez choisir au moins un département')]
+    #[Assert\Count(min: 1, minMessage: 'Vous devez choisir au moins un département')]
     private ?array $departments;
 
 
