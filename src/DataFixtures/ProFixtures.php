@@ -27,6 +27,7 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
         for ($a=0; $a < 10; $a++) 
         { 
             $pro = (new Pro)
+                    ->setEmail('macon'.$a.'@gmail.com')
                     ->setBusinessName('Maçonnerie n° '.$a)
                     ->setContactName('maçon n° '.$a)
                     ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))
@@ -45,6 +46,7 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
         //maçon
 
         $pro = (new Pro)
+                ->setEmail('pat-macon@gmail.com')
                 ->setBusinessName('Patrick Maçonnerie')
                 ->setContactName('Patrick Lacaze')
                 ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))
@@ -63,6 +65,7 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
         //peintre
 
         $pro = (new Pro)
+                ->setEmail('bernard-peinture@gmail.com')
                 ->setBusinessName('Bernard Peinture')
                 ->setContactName('Bernard Pinto')
                 ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))
@@ -84,6 +87,7 @@ class ProFixtures extends Fixture implements DependentFixtureInterface
         //charpentier-couvreur
 
         $pro = (new Pro)
+                ->setEmail('jean-claude@gmail.com')
                 ->setBusinessName('Renov Toiture')
                 ->setContactName('Jean-Claude Rouget')
                 ->setCity($this->getReference('city'. random_int(1, CityConfig::COUNT)))

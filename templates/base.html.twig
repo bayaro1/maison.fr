@@ -27,10 +27,18 @@
         {% block navbar %}
             {% include "layout/_default_navbar.html.twig" %}
         {% endblock %}
+
+        {% block flashes %}
+            {% include "layout/_flashes.html.twig" %}
+        {% endblock %}
+
+
         {% block body %}{% endblock %}
 
         <footer>
-            {% include "layout/_footer.html.twig" %}
+            {% block footer %}
+                {% include "layout/_footer.html.twig" %}
+            {% endblock %}
         </footer>
     </body>
 </html>

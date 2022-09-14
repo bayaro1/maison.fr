@@ -46,7 +46,7 @@ class Register
     /** 
      * @var null|Picture[]
      */
-    private ?array $pictures;
+    private ?array $pictures = [];
 
     #[Assert\Count(min: 1, minMessage: 'Vous devez choisir au moins une catégorie')]
     #[Assert\All([
