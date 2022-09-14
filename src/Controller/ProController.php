@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\City;
+use App\Entity\Pro;
 use App\Form\DataModel\Search;
 use App\Form\SearchType;
 use App\Repository\CityRepository;
 use App\Repository\ProRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +19,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProController extends AbstractController
 {
     protected ProRepository $proRepository;
+    protected EntityManagerInterface $em;
 
-    public function __construct(ProRepository $proRepository)
+    public function __construct(ProRepository $proRepository, EntityManagerInterface $em)
     {
         $this->proRepository = $proRepository;
+        $this->em = $em;
     }
 
 
@@ -52,5 +56,15 @@ class ProController extends AbstractController
             'form' => $form->createView(), 
             'pros' => $pros
         ]);
+    }
+
+    #[Route('pro-remove/{id}', name: 'pro_remove')]
+    public function remove(Pro $pro, Request $request): Response
+    {
+        $businessName = $pro->getBusinessName();
+        $this->em->remove($pro);
+        $this->em->flush();
+        $this->addFlash('success', 'le pro "'.$businessName.'" a bien été supprimé !');
+        return $this->redirect($request->get('target', 'home'));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
 use App\Entity\City;
 use App\Entity\Category;
@@ -41,31 +41,31 @@ class HomeControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Prenez RDV avec un pro de l\'Habitat');
     }
 
-    public function testSearch():void 
-    {
-        $container = self::getContainer();
-        /** @var AbstractDatabaseTool */
-        $dbtool = $container->get(DatabaseToolCollection::class)->get();
-        $dbtool->loadFixtures([
-            CategoryFixtures::class,
-            CityFixtures::class
-        ]);
+    // public function testSearch():void 
+    // {
+    //     $container = self::getContainer();
+    //     /** @var AbstractDatabaseTool */
+    //     $dbtool = $container->get(DatabaseToolCollection::class)->get();
+    //     $dbtool->loadFixtures([
+    //         CategoryFixtures::class,
+    //         CityFixtures::class
+    //     ]);
 
-        $categories = $container->get(CategoryRepository::class)->findAll();
-        $cities = $container->get(CityRepository::class)->findAll();
-        /** @var Category */
-        $category = $categories[random_int(0, count($categories) - 1)];
-        /** @var City */
-        $city = $cities[random_int(0, count($cities) - 1)];
+    //     $categories = $container->get(CategoryRepository::class)->findAll();
+    //     $cities = $container->get(CityRepository::class)->findAll();
+    //     /** @var Category */
+    //     $category = $categories[random_int(0, count($categories) - 1)];
+    //     /** @var City */
+    //     $city = $cities[random_int(0, count($cities) - 1)];
         
-        $form = $this->crawler->selectButton('Rechercher')->form([
-            'category' => $category->getId(),
-            'city' => $city->getId()
-        ]);
-        $this->client->submit($form);
-        $this->assertResponseRedirects($this->client->getContainer()->get(UrlGeneratorInterface::class)->generate('pro_index', [
-            'city_slug' => $city->getSlug(),
-            'category_slug' => $category->getSlug()
-        ]));
-    }
+    //     $form = $this->crawler->selectButton('Rechercher')->form([
+    //         'category' => $category->getId(),
+    //         'city' => $city->getId()
+    //     ]);
+    //     $this->client->submit($form);
+    //     $this->assertResponseRedirects($this->client->getContainer()->get(UrlGeneratorInterface::class)->generate('pro_index', [
+    //         'city_slug' => $city->getSlug(),
+    //         'category_slug' => $category->getSlug()
+    //     ]));
+    // }
 }

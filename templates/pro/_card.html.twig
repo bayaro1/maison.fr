@@ -1,7 +1,7 @@
 <div style="background-color: white; display: flex; margin-bottom: 50px;">
     <div style="width: 30%;">
         {% if pro.firstPicture is not null %}
-            <img style="max-width: 100%" src="{{ vich_uploader_asset(pro.firstPicture, 'imageFile') }}" alt="photo de présentation du professionnel">
+            <img style="max-width: 100%" src="{{ vich_uploader_asset(pro.firstPicture, 'imageFile') | imagine_filter('my_thumb') }}" alt="photo de présentation du professionnel">
         {% endif %}
     </div>
     <div style="width: 100%;">
@@ -23,4 +23,7 @@
             </div>
         </div>
     </div>
+    <a href="{{ path('pro_remove', {id: pro.id, target: app.request.requestUri}) }}" style="text-decoration: none; color: red;">
+        <i class="bi bi-trash"></i> Supprimer
+    </a>
 </div>

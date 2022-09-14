@@ -2,14 +2,22 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\City;
 use App\Helper\Slugator;
 use App\Config\CityConfig;
-use App\Entity\City;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CityFixtures extends Fixture
 {
+    private SluggerInterface $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $i = 0;
@@ -18,7 +26,7 @@ class CityFixtures extends Fixture
             $i++;
             $city = (new City)
                         ->setName($name)
-                        ->setSlug(Slugator::slugify($name))
+                        ->setSlug($this->slugger->slug($name))
                         ->setPostalCode($postalCode)
                         ->setDepartmentCode(substr($postalCode, 0, 2))
                         ;

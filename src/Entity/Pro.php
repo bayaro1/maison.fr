@@ -29,7 +29,7 @@ class Pro
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'pros')]
     private Collection $categories;
 
-    #[ORM\OneToMany(mappedBy: 'pro', targetEntity: Picture::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'pro', targetEntity: Picture::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $pictures;
 
     #[ORM\ManyToOne(inversedBy: 'pros')]
@@ -40,7 +40,7 @@ class Pro
 
     private ?Picture $firstPicture = null;
 
-    #[ORM\OneToOne(mappedBy: 'pro', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'pro', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]

@@ -1,6 +1,8 @@
 <?php
 namespace App\Tests\Persister;
 
+use App\DataFixtures\CategoryFixtures;
+use App\DataFixtures\CityFixtures;
 use App\Entity\Pro;
 use App\Entity\City;
 use App\Entity\User;
@@ -16,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
@@ -84,6 +87,10 @@ class RegisterPersisterTest extends KernelTestCase
 
     private function createRegister():Register
     {
+        self::getContainer()->get(DatabaseToolCollection::class)->get()->loadFixtures([
+            CategoryFixtures::class, 
+            CityFixtures::class
+        ]);
         $city = self::getContainer()->get(CityRepository::class)->findAll()[0];
         $category = self::getContainer()->get(CategoryRepository::class)->findAll()[0];
         return (new Register)
