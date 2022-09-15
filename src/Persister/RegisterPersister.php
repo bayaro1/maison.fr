@@ -7,23 +7,27 @@ use App\Form\DataModel\Register;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class RegisterPersister
 {
     private EntityManagerInterface $em;
     private UserPasswordHasherInterface $hasher;
+    private TokenGeneratorInterface $tokenGenerator;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $hasher)
+    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $hasher, TokenGeneratorInterface $tokenGenerator)
     {
         $this->em = $em;
         $this->hasher = $hasher;
+        $this->tokenGenerator = $tokenGenerator;
     }
-    public function persist(Register $register)
+    public function persist(Register $register):User
     {
         $user = new User;
         $user
             ->setEmail($register->getEmail())
             ->setPassword($this->hasher->hashPassword($user, $register->getPassword()))
+            ->setToken($this->tokenGenerator->generateToken())
             ;
         $this->em->persist($user);
 
@@ -43,5 +47,7 @@ class RegisterPersister
 
 
         $this->em->flush();
+
+        return $user;
     }
 }

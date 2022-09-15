@@ -30,6 +30,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?Pro $pro = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $confirmed = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $token = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $choice2FA = null;
+
+    #[ORM\Column(length: 6, nullable: true)]
+    private ?string $code2FA = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +120,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPro(?Pro $pro): self
     {
         $this->pro = $pro;
+
+        return $this;
+    }
+
+    public function isConfirmed(): ?bool
+    {
+        return $this->confirmed;
+    }
+
+    public function setConfirmed(?bool $confirmed): self
+    {
+        $this->confirmed = $confirmed;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function isChoice2FA(): ?bool
+    {
+        return $this->choice2FA;
+    }
+
+    public function setChoice2FA(?bool $choice2FA): self
+    {
+        $this->choice2FA = $choice2FA;
+
+        return $this;
+    }
+
+    public function getCode2FA(): ?string
+    {
+        return $this->code2FA;
+    }
+
+    public function setCode2FA(?string $code2FA): self
+    {
+        $this->code2FA = $code2FA;
 
         return $this;
     }

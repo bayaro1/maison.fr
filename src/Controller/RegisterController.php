@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Email\ConfirmationEmail;
 use App\Form\RegisterType;
 use App\Form\DataModel\Register;
 use App\Persister\RegisterPersister;
@@ -12,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RegisterController extends AbstractController
 {
     #[Route('/inscription', name: 'register_index')]
-    public function index(Request $request, RegisterPersister $registerPersister): Response
+    public function index(Request $request, RegisterPersister $registerPersister, ConfirmationEmail $confirmationEmail): Response
     {
         $register = new Register;
         $form = $this->createForm(RegisterType::class, $register);
@@ -20,8 +21,9 @@ class RegisterController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid()) 
         { 
-           $registerPersister->persist($register);
-           $this->addFlash('success', 'l\'inscription s\'est bien passée !');
+           $user = $registerPersister->persist($register);
+           $confirmationEmail->sendTo($user);
+           $this->addFlash('success', 'l\'inscription s\'est bien passée, veuillez à présent cliquer sur le lien présent dans l\'email de bienvenue que nous vous avons envoyé afin de confirmer votre compte');
            return $this->redirectToRoute('account_index');
         }
         return $this->render('register/index.html.twig', [

@@ -4,8 +4,11 @@ namespace App\Tests\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\DataFixtures\TestUserFixtures;
+use App\DataFixtures\TestUsersFixtures;
 use Symfony\Component\BrowserKit\Cookie;
+use App\DataFixtures\TestUserConfirmedFixtures;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use App\DataFixtures\TestUserConfirmedWith2FAFixtures;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -30,10 +33,10 @@ trait AuthenticationTrait
         return $container->get(UserRepository::class)->findAll()[0];
     }
 
-    public function loadTestUserFixtures(ContainerInterface $container):void 
+    public function loadTestUsersFixtures(ContainerInterface $container):void 
     {
         /** @var AbstractDatabaseTool */
         $dbtool = $container->get(DatabaseToolCollection::class)->get();
-        $dbtool->loadFixtures([TestUserFixtures::class]);
+        $dbtool->loadFixtures([TestUsersFixtures::class]);
     }
 }
