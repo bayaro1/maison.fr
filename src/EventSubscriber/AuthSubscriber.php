@@ -6,6 +6,7 @@ use App\Email\Code2FAEmail;
 use App\Entity\User;
 use App\Helper\Code2FAGenerator;
 use App\Security\AppAuthenticator;
+use App\Security\SecurityTokenManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\Security;
@@ -21,7 +22,7 @@ class AuthSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request, 
-        private Code2FAEmail $code2FAEmail, 
+        private SecurityTokenManager $securityTokenManager,
         private EntityManagerInterface $em,
         private Security $security
         )
@@ -42,10 +43,7 @@ class AuthSubscriber implements EventSubscriberInterface
             $this->request->getSession()->set(AppAuthenticator::CODE_2FA, null);
             if($code2FA === null)
             {
-                $user->setCode2FA(Code2FAGenerator::generate());
-                $this->em->persist($user);
-                $this->em->flush();
-                $this->code2FAEmail->sendTo($user);
+                $this->securityTokenManager->requireCode2faFrom($user);
                 throw new AuthenticationException('Veuillez entrer le code qui vous a été envoyé par email', AppAuthenticator::APP_2FA_ERROR);
             }
             elseif($code2FA !== $user->getCode2FA())

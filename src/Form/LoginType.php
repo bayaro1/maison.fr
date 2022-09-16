@@ -94,7 +94,7 @@ class LoginType extends AbstractType
             'lastUsername' => '',
             'lastPassword' => '',
             'lastCode2FA' => '',
-            'lastRememberMe' => null
+            'lastRememberMe' => null,
         ]);
     }
 

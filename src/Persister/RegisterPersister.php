@@ -27,7 +27,6 @@ class RegisterPersister
         $user
             ->setEmail($register->getEmail())
             ->setPassword($this->hasher->hashPassword($user, $register->getPassword()))
-            ->setToken($this->tokenGenerator->generateToken())
             ;
         $this->em->persist($user);
 
