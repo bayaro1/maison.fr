@@ -15,13 +15,15 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class AuthSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request, 
         private Code2FAEmail $code2FAEmail, 
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private Security $security
         )
     {
     }
@@ -55,14 +57,23 @@ class AuthSubscriber implements EventSubscriberInterface
 
     public function onLoginSuccess(LoginSuccessEvent $event)
     {
-        $event->getRequest()->getSession()->getBag('flashes')->add('success', 'Vous êtes connecté !');
+        if($this->security->isGranted('IS_AUTHENTICATED_FULLY'))
+        {
+            $event->getRequest()->getSession()->getBag('flashes')->add('success', 'Vous êtes connecté !');
+        }
+    }
+
+    public function onLogout(LogoutEvent $event)
+    {
+        $event->getRequest()->getSession()->getBag('flashes')->add('success', 'Vous êtes déconnecté !');
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             AuthenticationSuccessEvent::class => 'onAuthenticationSuccess',
-            LoginSuccessEvent::class => 'onLoginSuccess'
+            LoginSuccessEvent::class => 'onLoginSuccess',
+            LogoutEvent::class => 'onLogout'
         ];
     }
 }

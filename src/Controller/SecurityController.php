@@ -36,7 +36,8 @@ class SecurityController extends AbstractController
             'view2FA' => $error && $error->getCode() === AppAuthenticator::APP_2FA_ERROR,
             'lastUsername' => $request->getSession()->get(AppAuthenticator::LAST_USERNAME),
             'lastPassword' => $request->getSession()->get(AppAuthenticator::LAST_PASSWORD),
-            'lastCode2FA' => $request->getSession()->get(AppAuthenticator::LAST_CODE_2FA)
+            'lastCode2FA' => $request->getSession()->get(AppAuthenticator::LAST_CODE_2FA),
+            'lastRememberMe' => $request->getSession()->get(AppAuthenticator::LAST_REMEMBER_ME)
         ]);
 
         return $this->render('security/login.html.twig', [

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use App\Security\AppAuthenticator;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,6 +16,8 @@ class LoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $rememberMeAttr = $options['lastRememberMe'] === null ? []: ['checked' => 'checked'];
+
         if($options['view2FA'])
         {
             $builder
@@ -49,6 +52,11 @@ class LoginType extends AbstractType
                         'value' => $options['lastCode2FA']
                     ]
                 ])
+                ->add('_remember_me', CheckboxType::class, [
+                    'label' => 'Se souvenir de moi',
+                    'required' => false,
+                    'attr' => $rememberMeAttr
+                ])
                 ;
         }
         else
@@ -67,6 +75,11 @@ class LoginType extends AbstractType
                         'value' => $options['lastPassword']
                     ]
                 ])
+                ->add('_remember_me', CheckboxType::class, [
+                    'label' => 'Se souvenir de moi',
+                    'required' => false,
+                    'attr' => $rememberMeAttr
+                ])
                 ;
         }
     }
@@ -80,7 +93,8 @@ class LoginType extends AbstractType
             'view2FA' => false,
             'lastUsername' => '',
             'lastPassword' => '',
-            'lastCode2FA' => ''
+            'lastCode2FA' => '',
+            'lastRememberMe' => null
         ]);
     }
 
