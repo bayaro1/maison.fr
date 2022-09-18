@@ -20,8 +20,12 @@ class RegisterType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('password', PasswordType::class)
-            ->add('passwordConfirm', PasswordType::class)
+            ->add('password', PasswordType::class, [
+                'always_empty' => false
+            ])
+            ->add('passwordConfirm', PasswordType::class, [
+                'always_empty' => false
+            ])
             ->add('businessName')
             ->add('contactName')
             ->add('phone')

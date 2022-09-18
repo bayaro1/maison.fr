@@ -120,6 +120,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPro(?Pro $pro): self
     {
         $this->pro = $pro;
+        if($pro->getUser() !== $this)
+        {
+            $pro->setUser($this);
+        }
 
         return $this;
     }

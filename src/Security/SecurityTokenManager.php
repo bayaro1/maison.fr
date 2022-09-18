@@ -29,6 +29,14 @@ class SecurityTokenManager
         $user->setToken($this->tokenGenerator->generateToken());
         $this->em->persist($user);
         $this->em->flush();
-        $this->securityEmail->sendConfirmationEmailTo($user);
+        $this->securityEmail->sendConfirmationEmailTo($user, 'security_emailConfirmation');
     }
+    public function requirePasswordResetConfirmationFrom(User $user)
+    {
+        $user->setToken($this->tokenGenerator->generateToken());
+        $this->em->persist($user);
+        $this->em->flush();
+        $this->securityEmail->sendResetPasswordConfirmationEmailTo($user, 'security_newPassword');
+    }
+    
 }

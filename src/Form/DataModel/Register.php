@@ -19,12 +19,12 @@ class Register
     private ?string $email;
 
     
-    #[Assert\EqualTo(propertyPath: 'passwordConfirm', message: '')]
-    #[Assert\NotBlank(message: 'le mot de passe est obligatoire')]
-    #[Assert\Length(min: 6, minMessage: 'le mot de passe doit comporter au moins 6 caractères')]
+    #[Assert\EqualTo(propertyPath: 'passwordConfirm', message: '', groups: ['new_password', 'Default'])]
+    #[Assert\NotBlank(message: 'le mot de passe est obligatoire', groups: ['new_password', 'Default'])]
+    #[Assert\Length(min: 6, minMessage: 'le mot de passe doit comporter au moins 6 caractères', groups: ['new_password', 'Default'])]
     private ?string $password;
 
-    #[Assert\EqualTo(propertyPath: 'password', message: 'Les deux mots de passe ne sont pas identiques')]
+    #[Assert\EqualTo(propertyPath: 'password', message: 'Les deux mots de passe ne sont pas identiques', groups: ['new_password', 'Default'])]
     private ?string $passwordConfirm;
 
     #[Assert\NotBlank(message: 'Le nom de l\'entreprise est obligatoire')]

@@ -9,7 +9,9 @@ use App\Form\DataModel\Search;
 use App\Form\SearchType;
 use App\Repository\CityRepository;
 use App\Repository\ProRepository;
+use App\Security\Voter\ProVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,6 +57,23 @@ class ProController extends AbstractController
             'category' => $category,
             'form' => $form->createView(), 
             'pros' => $pros
+        ]);
+    }
+
+    #[Route('/pro/{id}', name: 'pro_show')]
+    public function show(Pro $pro): Response 
+    {
+        return $this->render('pro/show.html.twig', [
+            'pro' => $pro
+        ]);
+    }
+
+    #[Route('/pro/edit/{id}', name: 'pro_edit')]
+    public function edit(Pro $pro): Response 
+    {
+        $this->denyAccessUnlessGranted('CAN_EDIT', $pro, 'Vous ne pouvez pas éditer ce pro car vous nen etes pas le propriétaire');
+        return $this->render('pro/edit.html.twig', [
+            'pro' => $pro
         ]);
     }
 
