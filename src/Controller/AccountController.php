@@ -13,6 +13,12 @@ class AccountController extends AbstractController
     #[Route('/mon-compte', name: 'account_index')]
     public function index():Response
     {
+        if($pro = $this->getUser()->getPro())
+        {
+            return $this->redirectToRoute('pro_show', [
+                'id' => $pro->getId()
+            ]);
+        }
         return $this->render('account/index.html.twig');
     }
 }

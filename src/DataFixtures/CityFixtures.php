@@ -26,7 +26,7 @@ class CityFixtures extends Fixture
             $i++;
             $city = (new City)
                         ->setName($name)
-                        ->setSlug($this->slugger->slug($name))
+                        ->setSlug(strtolower($this->slugger->slug($name)))
                         ->setPostalCode($postalCode)
                         ->setDepartmentCode(substr($postalCode, 0, 2))
                         ;

@@ -30,7 +30,7 @@ class ProController extends AbstractController
     }
 
 
-    #[Route('{city_slug}/{category_slug}/pros', name: 'pro_index')]
+    #[Route('{city_slug}/{category_slug}/pros', name: 'pro_index', requirements: ['category_slug' => '[a-z\-]+', 'city_slug' => '[a-z\-]+'])]
     #[ParamConverter('city', options: ['mapping' => ['city_slug' => 'slug']])]
     #[ParamConverter('category', options: ['mapping' => ['category_slug' => 'slug']])]
     public function index(City $city, Category $category, Request $request): Response
@@ -60,7 +60,7 @@ class ProController extends AbstractController
         ]);
     }
 
-    #[Route('/pro/{id}', name: 'pro_show')]
+    #[Route('/pro/{id}', name: 'pro_show', requirements: ['id' => '\d+'])]
     public function show(Pro $pro): Response 
     {
         return $this->render('pro/show.html.twig', [
@@ -68,7 +68,7 @@ class ProController extends AbstractController
         ]);
     }
 
-    #[Route('/pro/edit/{id}', name: 'pro_edit')]
+    #[Route('/pro/edit/{id}', name: 'pro_edit', requirements: ['id' => '\d+'])]
     public function edit(Pro $pro): Response 
     {
         $this->denyAccessUnlessGranted('CAN_EDIT', $pro, 'Vous ne pouvez pas éditer ce pro car vous nen etes pas le propriétaire');
@@ -85,5 +85,6 @@ class ProController extends AbstractController
         $this->em->flush();
         $this->addFlash('success', 'le pro "'.$businessName.'" a bien été supprimé !');
         return $this->redirect($request->get('target', 'home'));
+        
     }
 }

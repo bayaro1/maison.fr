@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -31,7 +30,6 @@ class SecurityController extends AbstractController
        private SecurityTokenManager $securityTokenManager
     )
     {
-
     }
 
     #[Route(path: '/login', name: 'security_login')]
@@ -43,12 +41,6 @@ class SecurityController extends AbstractController
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        //traduction du message dans le cas d'une connexion simple
-        if($error && !in_array($error->getCode(), [AppAuthenticator::APP_2FA_ERROR, AppAuthenticator::APP_CONFIRMED_ERROR]))
-        {
-            $error = new AuthenticationException('Identifiants invalides');
-        }
-
         $form = $this->createForm(LoginType::class, null, [
             'view2FA' => $error && $error->getCode() === AppAuthenticator::APP_2FA_ERROR,
             'lastUsername' => $request->getSession()->get(AppAuthenticator::LAST_USERNAME),
@@ -56,6 +48,12 @@ class SecurityController extends AbstractController
             'lastCode2FA' => $request->getSession()->get(AppAuthenticator::LAST_CODE_2FA),
             'lastRememberMe' => $request->getSession()->get(AppAuthenticator::LAST_REMEMBER_ME)
         ]);
+
+        //traduction du message dans le cas d'une erreur d'idenfifiants
+        if($error && !in_array($error->getCode(), [AppAuthenticator::APP_2FA_ERROR, AppAuthenticator::APP_CONFIRMED_ERROR]))
+        {
+            $error = new AuthenticationException('Identifiants invalides');
+        }
 
         return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
@@ -68,7 +66,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'security_logout')]
     public function logout(): void
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     #[Route('/confirmation-de-l-email', name: 'security_emailConfirmation')]
@@ -81,8 +78,6 @@ class SecurityController extends AbstractController
         $this->addFlash('success', 'Votre adresse email a été confirmée !');
         return $this->redirectToRoute('security_login');
     }
-
-    
 
     #[Route('/création-d-un-nouveau-mot-de-passe', name: 'security_newPassword')]
     public function newPassword(Request $request, UserPasswordHasherInterface $hasher)

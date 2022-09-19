@@ -25,7 +25,7 @@ class CategoryFixtures extends Fixture
             $i++;
             $category = (new Category)
                         ->setName($category_name)
-                        ->setSlug($this->slugger->slug($category_name))
+                        ->setSlug(strtolower($this->slugger->slug($category_name)))
                         ;
             $manager->persist($category);
             $this->addReference('category'.$i, $category);
