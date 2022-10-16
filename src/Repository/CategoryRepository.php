@@ -22,6 +22,26 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $q
+     * @return string[] array contenant les noms des catégories qui matchent avec q
+     */
+    public function findByQ(string $q): array
+    {
+        $data =  $this->createQueryBuilder('c')
+                    ->select('c.name')
+                    ->where('c.name LIKE :q')
+                    ->setParameter('q', '%'.$q.'%')
+                    ->getQuery()
+                    ->getResult()
+                    ;
+        return array_map(function($c) {
+            return $c['name'];
+        }, $data);
+    }
+
     public function findProIdsForOneCategory(Category $category) 
     {
         return $this->createQueryBuilder('c')
