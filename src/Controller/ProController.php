@@ -7,6 +7,7 @@ use App\Entity\City;
 use App\Entity\Pro;
 use App\Form\DataModel\Search;
 use App\Form\SearchType;
+use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
 use App\Repository\ProRepository;
 use App\Security\Voter\ProVoter;

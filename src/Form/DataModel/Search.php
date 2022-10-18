@@ -2,19 +2,16 @@
 namespace App\Form\DataModel;
 
 use App\Entity\City;
-
 use App\Entity\Category;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Search
 {
-    #[Assert\NotBlank(message: 'Vous devez choisir une catégorie de travaux')]
+    #[Assert\NotNull(message: 'vous devez choisir une catégorie parmi celles proposées')]
     protected Category|null $category;
 
-    #[Assert\NotBlank(message: 'Vous devez indiquer une ville')]
+    #[Assert\NotNull(message: 'vous devez choisir une commune parmi celles proposées')]
     protected City|null $city;
-
-    
 
 
     /**
@@ -56,4 +53,5 @@ class Search
 
         return $this;
     }
+
 }

@@ -6,33 +6,32 @@
     <div class="container" style="margin-left: 29%; margin-top: 4.5%;">
         <h1 id="main-title">Prenez RDV avec un pro de l'Habitat</h1>
 
-        <div>
-            {{ form_start(form) }}
-            <div style="display: flex; align-items: start;" id="home-form">
-                {{ form_row(form.category, {
-                    'label': false,
-                    'attr': {'placeholder': 'Que recherchez-vous ?', 'style': 'border: solid grey 1px; border-radius: 3px; padding: 8px; height: 50px; width: 300px; font-weight: 600; color: grey; padding-left: 15px;'}
-                }) }}
-                {{ form_row(form.city, {
-                    'label': false, 
-                    'attr': {
-                        'style': 'border: solid grey 1px; border-left: solid white; border-radius: 3px; padding: 8px; height: 50px; width: 300px; font-weight: 600; color: grey; padding-left: 15px;', 
-                        'placeholder': 'Où ?'
-                        }
-                }) }}
-                <button type="submit" id="homeform-button" class="ms-2" style="height: 50px; width: 140px;">Rechercher</button>
-            </div>
-            <div id="category_suggest" style="margin-top: 0%; cursor: pointer; width: 300px;"></div>
-            {{ form_end(form) }}
-        </div>
 
-        <div id="under" class="text-secondary" style="font-size: 0.8em;">
+        <form id="home-form" action="{{ path('home') }}" method="post" style="display: flex; align-items: start;">
+            <input id="category" name="category" placeholder="Que recherchez-vous ?" class="input-category {{ errors.category is defined ? 'is-invalid': '' }}">
+            <input id="city" name="city" placeholder="Où ?" class="input-city {{ errors.category is defined ? 'is-invalid': '' }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('home-form') }}"/>
+            <button type="submit" id="homeform-button" class="ms-2">Rechercher</button>
+        </form>
+        <div id="sub-form" style="display: flex; align-items: start;">
+            <div style="width: 300px;">
+                <div id="category-error" style="color: red; font-weight: 200;" class="ms-3">{{ errors.category ?? '' }}</div>
+                <div id="category-loader" class="ms-4"></div>
+                <div id="category-options-list" style="margin-top: 0%; cursor: pointer; width: 300px;"></div>
+            </div>
+            <div style="width: 300px;">
+                <div id="city-error" style="color: red; font-weight: 200;" class="ms-3">{{ errors.city ?? '' }}</div>
+                <div id="city-loader" class="ms-2"></div>
+                <div id="city-options-list" style="margin-top: 0%; cursor: pointer; width: 300px;"></div>
+            </div>
+        </div>
+       
+
+        <div id="under" class="text-secondary mt-3" style="font-size: 0.8em;">
             Recherches fréquentes : peindre ma chambre, réparer une fuite d'eau, rénovation
         </div>
         
-        <div id="load" class="text-secondary" style="font-size: 0.8em; display: none;">
-            ...chargement
-        </div>
+        
     </div>
 
     <div style="background-color: rgba(238, 232, 232, 0.925); margin-top: 110px; padding-top: 40px; height: 340px;">
@@ -42,4 +41,15 @@
     <div style="padding-top: 90px; height: 360px;">
         <h3 style="text-align: center; font-size: 1.4em;">Les derniers rendez-vous pour des travaux</h3>
     </div>
+
+
+    <!-- templates -->
+
+    <template id="load-layout">
+        <p id="load" class="text-secondary" style="font-size: 0.8em; display: none;">...chargement</p>
+    </template>
+
+    <template id="option-layout">
+        <p style="margin: 0px; height: 40 px; padding: 5%; vertical-align: center;"></p>
+    </template>
 {% endblock %}

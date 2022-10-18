@@ -21,6 +21,30 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
+      /**
+     * Undocumented function
+     *
+     * @param string $q
+     * @return string[] array contenant les noms des catégories qui matchent avec q
+     */
+    public function findByQ(string $q): array
+    {
+        /** @var City[] */
+        $cities = $this->createQueryBuilder('c')
+                    ->select('c')
+                    ->where('c.name LIKE :q')
+                    ->setParameter('q', '%'.$q.'%')
+                    ->getQuery()
+                    ->getResult()
+                    ;
+        return array_map(function($city) {
+            return [
+                'label' => $city->getFullName(),
+                'id' => $city->getId()
+            ];
+        }, $cities);
+    }
+
     public function add(City $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

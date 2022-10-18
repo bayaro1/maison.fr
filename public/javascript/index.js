@@ -3,10 +3,92 @@
 //     module.clock(document.getElementById('hour'));
 // });
 
-import { CategoryAutoComplete } from './CategoryAutoComplete.js';
+import { OptionSuggestor } from './OptionSuggestor.js';
 import * as F from './functions.js';
 
-new CategoryAutoComplete(document.querySelector('#home-form input#category'));
+const category_loader = F.getTemplate('load-layout').firstElementChild;
+document.getElementById('category-loader').append(category_loader);
+
+const city_loader = F.getTemplate('load-layout').firstElementChild;
+document.getElementById('city-loader').append(city_loader);
+// REFAIRE TOUT CI DESSUS LE LOADER
+
+const homeForm = document.getElementById('home-form');
+
+new OptionSuggestor(
+    'category',
+    homeForm,
+    document.getElementById('category-options-list'),
+    'option-layout',
+    category_loader,
+    '/category-suggest'
+    );
+
+new OptionSuggestor(
+    'city',
+    homeForm,
+    document.getElementById('city-options-list'),
+    'option-layout',
+    city_loader,
+    '/city-suggest'
+    );
+
+homeForm.addEventListener('submit', function(e) {
+    if(homeForm.querySelector('input[type=hidden][name=category]') === null) {
+        e.preventDefault();
+        homeForm.querySelector('input[name=category]').classList.add('is-invalid');
+        document.querySelector('#category-error').innerText = 'Merci d\'indiquer une activité';
+    }
+    if(homeForm.querySelector('input[type=hidden][name=city]') === null) {
+        e.preventDefault();
+        homeForm.querySelector('input[name=city]').classList.add('is-invalid');
+        document.querySelector('#city-error').innerText = 'Merci de préciser le lieu de votre projet';
+    }
+});
+
+for(const input of homeForm.querySelectorAll('input')) {
+    input.addEventListener('focusin', function(e) {
+        e.currentTarget.classList.remove('is-invalid');
+        document.getElementById(e.currentTarget.getAttribute('name')+'-error').innerText = '';
+    });
+} 
+
+
+
+
+
+// homeForm.addEventListener('submit', function(e) {
+//     e.preventDefault();
+//     const data = {
+//         category: document.querySelector('.input-category').getAttribute('value'),
+//         city: document.querySelector('.input-city').getAttribute('value')
+//     };
+//     console.log(data);
+//     fetch('/search', {
+//         method: 'POST',
+//         headers: {
+//             "Accept": "application/json",
+//             "Content-type": "application/json"
+//         },
+//         body: JSON.stringify(data)
+//     })
+//     .then(function(res) {
+//         if(res.ok) {
+//             return res.json();
+//         }
+//     })
+//     .then(function(data) {
+//         console.log(data);
+//     })
+//     .catch(function(error) {
+//         console.error(error);
+//     })
+// });
+
+
+
+
+
 
 
 

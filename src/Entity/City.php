@@ -35,6 +35,11 @@ class City
         $this->pros = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getFullName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

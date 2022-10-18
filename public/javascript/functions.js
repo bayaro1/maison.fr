@@ -65,3 +65,12 @@ export async function myGetFetch(url) {
     }
     throw new Error('erreur serveur');
 }
+
+
+/**
+ * 
+ * @param {string} id 
+ */
+export function getTemplate(id) {
+    return document.getElementById(id).content.cloneNode(true);
+}

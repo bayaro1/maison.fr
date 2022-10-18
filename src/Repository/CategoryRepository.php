@@ -30,16 +30,13 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findByQ(string $q): array
     {
-        $data =  $this->createQueryBuilder('c')
-                    ->select('c.name')
+        return $this->createQueryBuilder('c')
+                    ->select('c.name as label, c.id')
                     ->where('c.name LIKE :q')
                     ->setParameter('q', '%'.$q.'%')
                     ->getQuery()
                     ->getResult()
                     ;
-        return array_map(function($c) {
-            return $c['name'];
-        }, $data);
     }
 
     public function findProIdsForOneCategory(Category $category) 
